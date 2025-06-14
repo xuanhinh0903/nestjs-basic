@@ -17,7 +17,12 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    const { password } = createUserDto;
+    const hashPassword = this.usersService.getHashPassword(password);
+    return this.usersService.create({
+      ...createUserDto,
+      password: hashPassword,
+    });
   }
 
   @Get()
